@@ -1,5 +1,5 @@
 default currentDir = '${Directory.GetCurrentDirectory()}'
-default nodeDir = '${Path.Combine(currentDir, "bin", "node")}'
+default nodeDir = '${Path.Combine(currentDir, "bin", "nodejs")}'
 
 node-install once='installNode'
 
