@@ -334,7 +334,7 @@ foreach ($DownloadLink in $DownloadLinks) {
 }
 
 $BinPath = Get-Absolute-Path $(Join-Path -Path $InstallRoot -ChildPath $BinFolderRelativePath)
-if (-Not $NoPath) {
+if (-Not $NoPath -and (-Not $env:path.Contains($BinPath))) {
     Say "Adding to current process PATH: `"$BinPath`". Note: This change will not be visible if PowerShell was run as a child process."
     $env:path += ";$BinPath"
 }
