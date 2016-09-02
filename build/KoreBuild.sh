@@ -38,7 +38,7 @@ fi
 versionFile="$koreBuildFolder/$versionFileName"
 version=$(<$versionFile)
 
-[ -z "$KOREBUILD_DOTNET_CHANNEL" ] && KOREBUILD_DOTNET_CHANNEL=preview
+[ -z "$KOREBUILD_DOTNET_CHANNEL" ] && KOREBUILD_DOTNET_CHANNEL=rel-1.0.0
 [ -z "$KOREBUILD_DOTNET_VERSION" ] && KOREBUILD_DOTNET_VERSION=$version
 
 if [ ! -z "$KOREBUILD_SKIP_RUNTIME_INSTALL" ]; then
@@ -81,9 +81,20 @@ if [ ! -d $sakeFolder ]; then
     mv "$toolsProject" "$toolsProject.norestore"
 fi
 
+netFrameworkFolder=$repoFolder/$koreBuildFolder/NETFrameworkReferenceAssemblies
+netFrameworkContentDir=$netFrameworkFolder/4.5.1/content
+if [ ! -d $netFrameworkFolder ]; then
+    xplatToolsProject="$koreBuildFolder/xplat.project.json"
+    dotnet restore "$xplatToolsProject" --packages $scriptRoot -v Minimal
+    # Rename the project after restore because we don't want it to be restore afterwards
+   mv $xplatToolsProject $xplatToolsProject.norestore
+fi
+
+export DOTNET_REFERENCE_ASSEMBLIES_PATH=$netFrameworkContentDir
+
 nugetPath="$koreBuildFolder/nuget.exe"
 if [ ! -f $nugetPath ]; then
-    nugetUrl="https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
+    nugetUrl="https://dist.nuget.org/win-x86-commandline/v3.5.0-beta2/NuGet.exe"
     wget -O $nugetPath $nugetUrl 2>/dev/null || curl -o $nugetPath --location $nugetUrl 2>/dev/null
 fi
 

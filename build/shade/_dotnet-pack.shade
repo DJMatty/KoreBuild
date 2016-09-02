@@ -14,7 +14,7 @@ configuration=''
 */}
 
 default configuration = 'Debug'
-default pack_options=' ${E("KOREBUILD_DOTNET_PACK_OPTIONS")}'
+default pack_options=''
 
 @{
     var projectFolder=Path.GetDirectoryName(projectFile);
